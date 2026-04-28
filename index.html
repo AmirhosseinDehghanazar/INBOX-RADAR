@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inbox Radar v2.0 — Docs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #0b0f14;
+        --bg2: #111720;
+        --bg3: #161d28;
+        --border: #1f2d3d;
+        --border2: #243345;
+        --ink: #e8edf3;
+        --ink2: #8fa3b8;
+        --ink3: #4d6478;
+        --accent: #3b82f6;
+        --accent2: #10d9a0;
+        --accent3: #f43f5e;
+        --warn: #f59e0b;
+        --mono: "IBM Plex Mono", monospace;
+        --sans: "DM Sans", sans-serif;
+      }
+
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.65;
+        min-height: 100vh;
+      }
+
+      /* ── Layout ── */
+      .page {
+        max-width: 740px;
+        margin: 0 auto;
+        padding: 0 20px 60px;
+      }
+
+      /* ── Hero ── */
+      .hero {
+        padding: 52px 0 40px;
+        position: relative;
+      }
+      .hero::after {
+        content: "";
+        display: block;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          var(--accent) 0%,
+          var(--accent2) 40%,
+          transparent 100%
+        );
+        margin-top: 36px;
+        opacity: 0.4;
+      }
+
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        background: rgba(16, 217, 160, 0.1);
+        color: var(--accent2);
+        border: 1px solid rgba(16, 217, 160, 0.22);
+        padding: 5px 12px;
+        border-radius: 4px;
+        margin-bottom: 22px;
+      }
+      .live-badge .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent2);
+        animation: blink 1.6s ease-in-out infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
+
+      .hero h1 {
+        font-family: var(--mono);
+        font-size: clamp(32px, 6vw, 48px);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.08;
+        margin-bottom: 16px;
+      }
+      .hero h1 .hi {
+        color: var(--accent);
+      }
+      .hero h1 .ver {
+        font-size: 0.45em;
+        color: var(--ink3);
+        vertical-align: middle;
+        margin-left: 8px;
+      }
+
+      .hero-desc {
+        font-size: 15px;
+        color: var(--ink2);
+        max-width: 520px;
+        line-height: 1.8;
+        margin-bottom: 24px;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .pill {
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 4px 11px;
+        border-radius: 20px;
+        border: 1px solid var(--border2);
+        color: var(--ink3);
+        letter-spacing: 0.04em;
+      }
+      .pill.b {
+        border-color: rgba(59, 130, 246, 0.35);
+        color: #7eb3ff;
+        background: rgba(59, 130, 246, 0.07);
+      }
+      .pill.g {
+        border-color: rgba(16, 217, 160, 0.3);
+        color: #35dfa8;
+        background: rgba(16, 217, 160, 0.06);
+      }
+      .pill.r {
+        border-color: rgba(244, 63, 94, 0.3);
+        color: #f87191;
+        background: rgba(244, 63, 94, 0.06);
+      }
+
+      /* ── Section ── */
+      .section {
+        margin-top: 44px;
+      }
+      .sec-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .sec-num {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--ink3);
+        letter-spacing: 0.06em;
+      }
+      .sec-title {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--ink2);
+      }
+      .sec-line {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* ── Bug fix table ── */
+      .fix-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .fix {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--bg2);
+        align-items: start;
+      }
+      .fix.crit {
+        border-color: rgba(244, 63, 94, 0.35);
+        background: rgba(244, 63, 94, 0.04);
+      }
+      .fix.high {
+        border-color: rgba(245, 158, 11, 0.28);
+        background: rgba(245, 158, 11, 0.04);
+      }
+      .fix.med {
+        border-color: rgba(59, 130, 246, 0.28);
+        background: rgba(59, 130, 246, 0.04);
+      }
+      .fix.low {
+        border-color: rgba(16, 217, 160, 0.22);
+        background: rgba(16, 217, 160, 0.03);
+      }
+      .fix-sev {
+        font-size: 16px;
+        padding-top: 1px;
+      }
+      .fix-body {
+      }
+      .fix-tag {
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .fix-tag .loc {
+        color: var(--ink3);
+      }
+      .fix-tag .sev-label {
+      }
+      .fix.crit .sev-label {
+        color: #f87191;
+      }
+      .fix.high .sev-label {
+        color: #fbbf24;
+      }
+      .fix.med .sev-label {
+        color: #7eb3ff;
+      }
+      .fix.low .sev-label {
+        color: #35dfa8;
+      }
+      .fix-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .fix-detail {
+        font-size: 12px;
+        color: var(--ink2);
+        line-height: 1.6;
+      }
+      .fix-code {
+        font-family: var(--mono);
+        font-size: 10.5px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        padding: 8px 10px;
+        margin-top: 8px;
+        color: #a5d6ff;
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .fix-code .old {
+        color: #f87191;
+        text-decoration: line-through;
+        opacity: 0.7;
+      }
+      .fix-code .new {
+        color: #35dfa8;
+      }
+      .fix-code .cmt {
+        color: var(--ink3);
+      }
+
+      /* ── Pipeline flow ── */
+      .flow {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        overflow-x: auto;
+        padding: 4px 0 8px;
+      }
+      .fn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        min-width: 76px;
+      }
+      .fi {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        border: 1px solid var(--border2);
+        background: var(--bg3);
+        transition: transform 0.15s;
+      }
+      .fi:hover {
+        transform: translateY(-2px);
+      }
+      .fi.b {
+        background: rgba(59, 130, 246, 0.12);
+        border-color: rgba(59, 130, 246, 0.3);
+      }
+      .fi.g {
+        background: rgba(16, 217, 160, 0.1);
+        border-color: rgba(16, 217, 160, 0.25);
+      }
+      .fi.a {
+        background: rgba(245, 158, 11, 0.1);
+        border-color: rgba(245, 158, 11, 0.25);
+      }
+      .fl {
+        font-family: var(--mono);
+        font-size: 9px;
+        color: var(--ink3);
+        text-align: center;
+        line-height: 1.4;
+      }
+      .fa {
+        font-size: 13px;
+        color: var(--ink3);
+        padding: 0 2px;
+        margin-top: -20px;
+      }
+
+      /* ── Setup steps ── */
+      .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .step {
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        gap: 14px;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg2);
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+      }
+      .step:hover {
+        border-color: var(--border2);
+      }
+      .step.open {
+        border-color: var(--accent);
+        background: rgba(59, 130, 246, 0.05);
+      }
+      .step-n {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+        padding-top: 2px;
+      }
+      .step-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 3px;
+      }
+      .step-desc {
+        font-size: 12px;
+        color: var(--ink2);
+      }
+      .step-code {
+        display: none;
+        font-family: var(--mono);
+        font-size: 11px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        padding: 10px 12px;
+        margin-top: 10px;
+        color: #a5d6ff;
+        line-height: 1.7;
+        white-space: pre;
+        overflow-x: auto;
+      }
+      .step.open .step-code {
+        display: block;
+      }
+
+      /* ── Telegram preview ── */
+      .tg-wrap {
+        background: #0e1621;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #1a2535;
+      }
+      .tg-bubble {
+        background: #2b5278;
+        border-radius: 12px 12px 12px 3px;
+        padding: 14px 16px;
+        max-width: 340px;
+        font-family: var(--mono);
+        font-size: 11.5px;
+        line-height: 1.75;
+        color: #d6e4f0;
+      }
+      .tg-bubble b {
+        color: #fff;
+        font-weight: 700;
+      }
+      .tg-bubble .g {
+        color: #63d9a8;
+      }
+      .tg-bubble .o {
+        color: #ffa943;
+      }
+      .tg-bubble .c {
+        color: #a5d6ff;
+      }
+      .tg-bubble .dim {
+        color: #5c7d96;
+      }
+      .tg-time {
+        font-size: 10px;
+        color: #3a5a74;
+        text-align: right;
+        margin-top: 6px;
+        font-family: var(--mono);
+      }
+
+      /* ── Architecture modules ── */
+      .mods {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 8px;
+      }
+      .mod {
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg2);
+        transition: border-color 0.15s;
+      }
+      .mod:hover {
+        border-color: var(--border2);
+      }
+      .mod-ico {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+      .mod-name {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: var(--ink);
+      }
+      .mod-desc {
+        font-size: 11px;
+        color: var(--ink3);
+        line-height: 1.5;
+      }
+
+      /* ── Rule cards ── */
+      .rule-card {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 6px;
+        background: var(--bg2);
+      }
+      .rule-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        background: var(--bg3);
+        border-bottom: 1px solid var(--border);
+      }
+      .rule-name {
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .rule-pri {
+        font-family: var(--mono);
+        font-size: 9px;
+        margin-left: auto;
+        padding: 3px 9px;
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+      }
+      .pri-crit {
+        background: rgba(244, 63, 94, 0.12);
+        color: #f87191;
+        border: 1px solid rgba(244, 63, 94, 0.3);
+      }
+      .pri-high {
+        background: rgba(245, 158, 11, 0.12);
+        color: #fbbf24;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+      .pri-med {
+        background: rgba(59, 130, 246, 0.12);
+        color: #7eb3ff;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+      }
+      .pri-low {
+        background: rgba(16, 217, 160, 0.1);
+        color: #35dfa8;
+        border: 1px solid rgba(16, 217, 160, 0.25);
+      }
+      .rule-body {
+        padding: 10px 14px;
+        font-family: var(--mono);
+        font-size: 10.5px;
+        color: var(--ink3);
+        line-height: 1.7;
+      }
+
+      /* ── Code block ── */
+      .codebox {
+        font-family: var(--mono);
+        font-size: 11px;
+        background: #060a10;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px 20px;
+        line-height: 1.85;
+        overflow-x: auto;
+        color: var(--ink2);
+        white-space: pre;
+      }
+      .codebox .k {
+        color: #7eb3ff;
+      }
+      .codebox .s {
+        color: #a5d6ff;
+      }
+      .codebox .v {
+        color: #79c0ff;
+      }
+      .codebox .c {
+        color: #3a5069;
+      }
+      .codebox .g {
+        color: #35dfa8;
+      }
+
+      /* ── Footer ── */
+      .footer {
+        margin-top: 52px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .footer-brand {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--ink3);
+      }
+      .footer-links {
+        display: flex;
+        gap: 14px;
+      }
+      .footer-link {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--accent);
+        cursor: pointer;
+      }
+      .upper-links {
+        display: flex;
+        gap: 14px;
+      }
+      .upper-link {
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--accent);
+        cursor: pointer;
+      }
+      .text_custom {
+        color: #35dfa8;
+        box-shadow: #100606;
+      }
+      a {
+        text-decoration: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- HERO -->
+      <div class="hero">
+        <div class="live-badge"><span class="dot"></span> LIVE SYSTEM</div>
+        <h1>
+          INBOX <span class="hi">RADAR</span><span class="ver">v2.0</span>
+        </h1>
+        <h2 class="upper-links">
+          <a href="https://github.com/AmirhosseinDehghanazar">
+            <span class="upper-link"
+              >Made by
+              <span class="text_custom pill g"
+                >AmirhosseinDehghaniazar</span
+              ></span
+            >
+          </a>
+        </h2>
+        <p class="hero-desc">
+          A zero-infrastructure Gmail → Telegram notification engine. Filters,
+          deduplicates, and formats your inbox into structured Telegram alerts —
+          running entirely inside Google Apps Script. No servers, no databases.
+        </p>
+        <div class="pill-row">
+          <span class="pill b">Google Apps Script</span>
+          <span class="pill g">Telegram Bot API</span>
+          <span class="pill r">Zero Infrastructure</span>
+          <span class="pill">No External DBs</span>
+          <span class="pill">Rule-based Filtering</span>
+          <span class="pill">Daily Digest</span>
+        </div>
+      </div>
+
+      <!-- BUG FIXES -->
+      <div class="section">
+        <div class="sec-head">
+          <span class="sec-num">00</span>
+          <span class="sec-title">BUG FIXES IN v2.0</span>
+          <div class="sec-line"></div>
+        </div>
+        <div class="fix-list">
+          <div class="fix crit">
+            <div class="fix-sev">🔴</div>
+            <div class="fix-body">
+              <div class="fix-tag">
+                <span class="sev-label">CRITICAL</span>
+                <span class="loc">CONFIG_KEYS · configManager</span>
+              </div>
+              <div class="fix-title">
+                CONFIG_KEYS values were live credentials, not key names
+              </div>
+              <div class="fix-detail">
+                <code>BOT_TOKEN</code> and <code>CHAT_ID</code> held the actual
+                bot token and numeric chat ID as their values. Since
+                <code>CONFIG_KEYS</code> is a map of
+                <em>property store key names</em>, every <code>set()</code> and
+                <code>get()</code> call used the raw token string as the key —
+                so nothing was ever stored or retrieved correctly. This caused
+                the <em>"BOT_TOKEN and CHAT_ID are required"</em> crash on every
+                <code>setup()</code> call and the silent "Inbox Radar is
+                disabled" skip on every trigger run.
+              </div>
+              <div class="fix-code">
+                <span class="old"
+                  >BOT_TOKEN: "8734890310:AAHCwF2...", // ❌ actual secret as
+                  key name</span
+                >
+                <span class="old"
+                  >CHAT_ID: "5792120007", // ❌ actual ID as key name</span
+                >
+                <span class="new"
+                  >BOT_TOKEN: "BOT_TOKEN", // ✅ plain string key name</span
+                >
+                <span class="new"
+                  >CHAT_ID: "CHAT_ID", // ✅ plain string key name</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="fix high">
+            <div class="fix-sev">🟠</div>
+            <div class="fix-body">
+              <div class="fix-tag">
+                <span class="sev-label">HIGH</span>
+                <span class="loc">emailFetcher._parseMessage</span>
+              </div>
+              <div class="fix-title">
+                Dead function used wrong Gmail API (thread vs message)
+              </div>
+              <div class="fix-detail">
+                <code>_parseMessage(message)</code> accepted a
+                <code>GmailMessage</code> but internally aliased it as
+                <code>thread</code> and called
+                <code>thread.getPlainBody()</code> — a method that doesn't exist
+                on <code>GmailThread</code>. Also used
+                <code>thread.getId()</code> which returns a thread ID, not a
+                message ID. The function was never called (fetch() inlined its
+                own version) but left a correctness trap. Rewritten to accept
+                <code>(msg, thread)</code> and now used in <code>fetch()</code>.
+              </div>
+              <div class="fix-code">
+                <span class="old"
+                  >function _parseMessage(message) { // ❌ wrong signature</span
+                >
+                <span class="old">
+                  const thread = message; // ❌ aliased incorrectly</span
+                >
+                <span class="old">
+                  const body = thread.getPlainBody(); // ❌ GmailThread has no
+                  getPlainBody()</span
+                >
+                <span class="old">
+                  const msgId = thread.getId(); // ❌ returns thread ID, not
+                  message ID</span
+                >
+                <span class="new"
+                  >function _parseMessage(msg, thread) { // ✅ correct
+                  parameters</span
+                >
+                <span class="new">
+                  id: msg.getId(), // ✅ GmailMessage.getId()</span
+                >
+                <span class="new">
+                  bodyPreview: _cleanBody(msg.getPlainBody() ||
+                  msg.getBody())</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="fix med">
+            <div class="fix-sev">🔵</div>
+            <div class="fix-body">
+              <div class="fix-tag">
+                <span class="sev-label">MEDIUM</span>
+                <span class="loc">configManager.isEnabled</span>
+              </div>
+              <div class="fix-title">
+                isEnabled() silently returned false before setup() ran
+              </div>
+              <div class="fix-detail">
+                <code>get("ENABLED")</code> returns <code>null</code> before
+                <code>setup()</code> is called. <code>null === "true"</code> is
+                <code>false</code>, so every trigger run before initialization
+                would silently log <em>"Inbox Radar is disabled"</em> — masking
+                the real problem (setup not yet run). Added an explicit null
+                check with a clear log message.
+              </div>
+              <div class="fix-code">
+                <span class="old"
+                  >return get(CONFIG_KEYS.ENABLED) === "true"; // null → false,
+                  no warning</span
+                >
+                <span class="new">const val = get(CONFIG_KEYS.ENABLED);</span>
+                <span class="new"
+                  >if (val === null) return false; // explicit: not yet
+                  initialized</span
+                >
+                <span class="new">return val === "true";</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="fix med">
+            <div class="fix-sev">🔵</div>
+            <div class="fix-body">
+              <div class="fix-tag">
+                <span class="sev-label">MEDIUM</span>
+                <span class="loc">formatter.buildDigest</span>
+              </div>
+              <div class="fix-title">
+                MarkdownV2 escape (\.) used inside legacy Markdown mode
+              </div>
+              <div class="fix-detail">
+                <code>buildDigest</code> numbered list items with
+                <code>${i + 1}\\.</code> (MarkdownV2 escaped dot), but
+                <code>telegramSender.send()</code> defaults to legacy
+                <code>Markdown</code> mode. In that mode the backslash renders
+                literally, so every digest item appeared as
+                <em>"1\. 🔐 Subject"</em> instead of <em>"1. 🔐 Subject"</em>.
+              </div>
+              <div class="fix-code">
+                <span class="old"
+                  >lines.push(`${i + 1}\\. ${emoji} *${email.subject}*`); // ❌
+                  literal \</span
+                >
+                <span class="new"
+                  >lines.push(`${i + 1}. ${emoji} *${email.subject}*`); // ✅
+                  plain dot</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="fix low">
+            <div class="fix-sev">🟢</div>
+            <div class="fix-body">
+              <div class="fix-tag">
+                <span class="sev-label">PERFORMANCE</span>
+                <span class="loc">dedupeStore · emailFetcher.fetch</span>
+              </div>
+              <div class="fix-title">
+                N PropertiesService reads in the fetch loop (one per message)
+              </div>
+              <div class="fix-detail">
+                <code>dedupeStore.has(id)</code> called
+                <code>_load()</code> internally, which hit
+                <code>PropertiesService</code> every call. With 20 messages
+                that's 20 separate API calls. Added
+                <code>dedupeStore.snapshot()</code> to load the Set once and
+                pass the reference through the entire loop.
+              </div>
+              <div class="fix-code">
+                <span class="old"
+                  >// ❌ Inside loop: 20 PropertiesService reads</span
+                >
+                <span class="old">if (dedupeStore.has(id)) { ... }</span>
+                <span class="new">// ✅ Load once before loop</span>
+                <span class="new"
+                  >const processedSet = dedupeStore.snapshot();</span
+                >
+                <span class="new">if (processedSet.has(id)) { ... }</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="section">
+        <div class="sec-head">
+          <span class="sec-num">01</span>
+          <span class="sec-title">HOW IT WORKS</span>
+          <div class="sec-line"></div>
+        </div>
+        <div class="flow">
+          <div class="fn">
+            <div class="fi b">📬</div>
+            <div class="fl">Gmail<br />Inbox</div>
+          </div>
+          <div class="fa">→</div>
+          <div class="fn">
+            <div class="fi">🔍</div>
+            <div class="fl">Email<br />Fetcher</div>
+          </div>
+          <div class="fa">→</div>
+          <div class="fn">
+            <div class="fi a">🗃</div>
+            <div class="fl">Dedupe<br />Store</div>
+          </div>
+          <div class="fa">→</div>
+          <div class="fn">
+            <div class="fi">⚙️</div>
+            <div class="fl">Rule<br />Engine</div>
+          </div>
+          <div class="fa">→</div>
+          <div class="fn">
+            <div class="fi">✏️</div>
+            <div class="fl">Formatter</div>
+          </div>
+          <div class="fa">→</div>
+          <div class="fn">
+            <div class="fi g">✈️</div>
+            <div class="fl">Telegram<br />Bot</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETUP -->
+      <div class="section">
+        <div class="sec-head">
+          <span class="sec-num">02</span>
+          <span class="sec-title">SETUP GUIDE</span>
+          <div class="sec-line"></div>
+        </div>
+        <div class="steps" id="steps">
+          <div class="step" onclick="toggle(this)">
+            <span class="step-n">01</span>
+            <div>
+              <div class="step-title">Create a Telegram Bot</div>
+              <div class="step-desc">
+                Message @BotFather on Telegram → /newbot → copy your API token.
+              </div>
+              <div class="step-code">
+                @BotFather → /newbot → set name: "Inbox Radar" → copy token:
+                123456:ABCdef...
+              </div>
+            </div>
+          </div>
+          <div class="step" onclick="toggle(this)">
+            <span class="step-n">02</span>
+            <div>
+              <div class="step-title">Get your Chat ID</div>
+              <div class="step-desc">
+                Send any message to your bot, then call getUpdates to find your
+                chat_id.
+              </div>
+              <div class="step-code">
+                https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates → find
+                "chat": {"id": 987654321}
+              </div>
+            </div>
+          </div>
+          <div class="step" onclick="toggle(this)">
+            <span class="step-n">03</span>
+            <div>
+              <div class="step-title">Open Google Apps Script</div>
+              <div class="step-desc">
+                Go to script.google.com → New project → paste the full
+                InboxRadar.gs file.
+              </div>
+              <div class="step-code">
+                script.google.com → New Project → paste InboxRadar.gs → save as
+                "Inbox Radar"
+              </div>
+            </div>
+          </div>
+          <div class="step" onclick="toggle(this)">
+            <span class="step-n">04</span>
+            <div>
+              <div class="step-title">Run setup()</div>
+              <div class="step-desc">
+                In the editor, select setup and run it with your credentials.
+                Grant Gmail permissions when prompted.
+              </div>
+              <div class="step-code">
+                // Run this from the editor — DO NOT hardcode in source
+                setup("123456:ABCdef...", "987654321")
+              </div>
+            </div>
+          </div>
+          <div class="step" onclick="toggle(this)">
+            <span class="step-n">05</span>
+            <div>
+              <div class="step-title">Install triggers</div>
+              <div class="step-desc">
+                Call installTriggers() to start the 5-minute watcher and
+                optional daily digest.
+              </div>
+              <div class="step-code">
+                installTriggers(5, 8) // every 5 min + digest at 8 AM
+              </div>
+            </div>
+          </div>
+          <div class="step" onclick="toggle(this)">
+            <span class="step-n">06</span>
+            <div>
+              <div class="step-title">Verify with a test notification</div>
+              <div class="step-desc">
+                Confirm the full pipeline works end-to-end before walking away.
+              </div>
+              <div class="step-code">
+                sendTestNotification() // ✅ Telegram should receive it
+                instantly
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TELEGRAM PREVIEW -->
+      <div class="section">
+        <div class="sec-head">
+          <span class="sec-num">03</span>
+          <span class="sec-title">ALERT FORMAT</span>
+          <div class="sec-line"></div>
+        </div>
+        <div class="tg-wrap">
+          <div class="tg-bubble">
+            <b>🔐 INBOX RADAR ALERT</b><br /><br />
+            <span class="g">🏷 Type:</span> OTP &amp; Security<br />
+            <span class="o">⚡ Priority:</span> 🚨 CRITICAL<br /><br />
+            👤 <b>From:</b> <span class="c">security@github.com</span><br />
+            📌 <b>Subject:</b> Your GitHub login code<br /><br />
+            🧠 <b>Preview:</b><br />
+            <span style="color: #c9d1d9"
+              >Your one-time authentication code is 847291. It expires in 15
+              minutes. If you didn't request this...</span
+            ><br /><br />
+            ⏱ <b>Time:</b> Apr 28, 2026 · 14:32<br /><br />
+            ─────────────────────<br />
+            <span class="dim">Sent by Inbox Radar</span>
+          </div>
+          <div class="tg-time">14:32 ✓✓</div>
+        </div>
+      </div>
+
+      <!-- ARCHITECTURE -->
+      <div class="section">
+        <div class="sec-head">
+          <span class="sec-num">04</span>
+          <span class="sec-title">ARCHITECTURE</span>
+          <div class="sec-line"></div>
+        </div>
+        <div class="mods">
+          <div class="mod">
+            <div class="mod-ico">⚙️</div>
+            <div class="mod-name">configManager</div>
+            <div class="mod-desc">
+              Script Properties KV store. All config in one place.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">🗃</div>
+            <div class="mod-name">dedupeStore</div>
+            <div class="mod-desc">
+              Persistent ID set (cap 2,000). Never sends duplicates.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">📬</div>
+            <div class="mod-name">emailFetcher</div>
+            <div class="mod-desc">
+              Gmail query with batching, body cleaning, error isolation.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">🧠</div>
+            <div class="mod-name">ruleEngine</div>
+            <div class="mod-desc">
+              JSON rules. Subject / From / Body matching + fallback.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">✏️</div>
+            <div class="mod-name">formatter</div>
+            <div class="mod-desc">
+              Telegram Markdown builder + daily digest formatter.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">✈️</div>
+            <div class="mod-name">telegramSender</div>
+            <div class="mod-desc">
+              Bot API with 3× retry, rate-limit backoff, truncation.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">⏱</div>
+            <div class="mod-name">scheduler</div>
+            <div class="mod-desc">
+              ScriptApp triggers — watcher + digest management.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">📊</div>
+            <div class="mod-name">digestEngine</div>
+            <div class="mod-desc">
+              Accumulates the day's emails, sends morning summary.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">🔍</div>
+            <div class="mod-name">debugLogger</div>
+            <div class="mod-desc">
+              Toggle-able verbose logging — zero code changes needed.
+            </div>
+          </div>
+          <div class="mod">
+            <div class="mod-ico">🎛</div>
+            <div class="mod-name">controlPanel</div>
+            <div class="mod-desc">
+              Public API: setup, enable, disable, setRules, status.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RULES -->
+      <div class="section">
+        <div class="sec-head">
+          <span class="sec-num">05</span>
+          <span class="sec-title">RULE ENGINE</span>
+          <div class="sec-line"></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-head">
+            <span>🔐</span><span class="rule-name">OTP &amp; Security</span
+            ><span class="rule-pri pri-crit">CRITICAL</span>
+          </div>
+          <div class="rule-body">
+            subjectContains: ["otp", "verification code", "2fa", "login
+            code"]<br />fromContains: [] · silent: false
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-head">
+            <span>💳</span><span class="rule-name">Finance &amp; Banking</span
+            ><span class="rule-pri pri-high">HIGH</span>
+          </div>
+          <div class="rule-body">
+            subjectContains: ["invoice","payment","transaction","receipt"]<br />fromContains:
+            ["paypal","stripe","revolut","wise"]
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-head">
+            <span>💼</span><span class="rule-name">Jobs &amp; Recruiting</span
+            ><span class="rule-pri pri-high">HIGH</span>
+          </div>
+          <div class="rule-body">
+            subjectContains: ["recruiter","interview","offer letter"]<br />fromContains:
+            ["linkedin","greenhouse.io","lever.co"]
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-head">
+            <span>📦</span
+            ><span class="rule-name">SaaS &amp; Subscriptions</span
+            ><span class="rule-pri pri-med">MEDIUM</span>
+          </div>
+          <div class="rule-body">
+            subjectContains: ["subscription","trial ending","plan renewal"]<br />keywordContains:
+            ["expires","renews","trial ends"]
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-head">
+            <span>📅</span><span class="rule-name">Calendar &amp; Meetings</span
+            ><span class="rule-pri pri-med">MEDIUM</span>
+          </div>
+          <div class="rule-body">
+            subjectContains: ["meeting","calendar","zoom","google meet"]<br />fromContains:
+            ["calendar-notification","no-reply@calendar"]
+          </div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-head">
+            <span>📰</span><span class="rule-name">Newsletters</span
+            ><span class="rule-pri pri-low">LOW · SILENT</span>
+          </div>
+          <div class="rule-body">
+            fromContains: ["newsletter","digest","substack","mailchimp"]<br />keywordContains:
+            ["unsubscribe"] · silent: true
+          </div>
+        </div>
+        <div
+          style="
+            margin-top: 10px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--ink3);
+          "
+        >
+          + fallback "General 📩" rule for unmatched emails. Customize via
+          setRules(json).
+        </div>
+      </div>
+
+      <!-- PUBLIC API -->
+      <div class="section">
+        <div class="sec-head">
+          <span class="sec-num">06</span>
+          <span class="sec-title">PUBLIC API</span>
+          <div class="sec-line"></div>
+        </div>
+        <div class="codebox">
+          <span class="c"
+            >// ── Setup
+            ─────────────────────────────────────────────────────</span
+          >
+          <span class="k">setup</span>(<span class="s">"BOT_TOKEN"</span>,
+          <span class="s">"CHAT_ID"</span>)
+          <span class="c">// initialize + test bot connection</span>
+          <span class="k">installTriggers</span>(<span class="v">5</span>,
+          <span class="v">8</span>)
+          <span class="c">// 5-min watcher + 8am daily digest</span>
+          <span class="k">sendTestNotification</span>()
+          <span class="c">// verify end-to-end pipeline</span>
+
+          <span class="c"
+            >// ── Control
+            ───────────────────────────────────────────────────</span
+          >
+          <span class="k">enable</span>() / <span class="k">disable</span>()
+          <span class="c">// pause without removing triggers</span>
+          <span class="k">toggleDebug</span>()
+          <span class="c">// verbose logging on/off</span>
+          <span class="k">status</span>()
+          <span class="c">// full health check report</span>
+
+          <span class="c"
+            >// ── Rules
+            ─────────────────────────────────────────────────────</span
+          >
+          <span class="k">setRules</span>(<span class="s">rulesJson</span>)
+          <span class="c">// replace active rules (validates first)</span>
+          <span class="k">getRules</span>()
+          <span class="c">// print current rules to log</span>
+
+          <span class="c"
+            >// ── Maintenance
+            ───────────────────────────────────────────────</span
+          >
+          <span class="k">reset</span>()
+          <span class="c">// wipe all config + triggers</span>
+          <span class="k">clearDedupeStore</span>()
+          <span class="c">// allow re-processing old emails</span>
+          <span class="k">setScanQuery</span>(<span class="s"
+            >"is:unread label:inbox"</span
+          >) <span class="c">// custom Gmail query</span>
+          <span class="k">setMaxBatch</span>(<span class="v">30</span>)
+          <span class="c">// emails per run (default 20)</span>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <span class="footer-brand"
+          >INBOX RADAR v2.0 · 100% Google Apps Script · Zero
+          infrastructure</span
+        >
+        <div class="footer-links">
+          <a href="https://github.com/AmirhosseinDehghanazar">
+            <span class="footer-link">Made by AmirhosseinDehghaniazar</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <script>
+      function toggle(el) {
+        const open = el.classList.contains("open");
+        document
+          .querySelectorAll(".step")
+          .forEach((s) => s.classList.remove("open"));
+        if (!open) el.classList.add("open");
+      }
+    </script>
+  </body>
+</html>
