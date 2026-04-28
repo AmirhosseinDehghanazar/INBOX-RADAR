@@ -90,7 +90,7 @@ Look for `"chat": {"id": 987654321}` — that number is your Chat ID.
 
 ### Step 3 — Open Google Apps Script
 
-Go to **[script.google.com](https://script.google.com)** → New project → paste the full `InboxRadar.gs` file → save as **"Inbox Radar"**.
+Go to **[script.google.com](https://script.google.com)** → New project → paste the full `Code.gs` file → save as **"Inbox Radar"**.
 
 ### Step 4 — Initialize
 
@@ -219,7 +219,7 @@ setMaxBatch(30)                     // Emails per run (default: 20)
 ## 🏗 Architecture
 
 ```
-InboxRadar.gs
+Code.gs
 │
 ├── configManager      Script Properties KV store — all config lives here
 │   └── initialize()   Stores credentials, defaults, and initial rules
@@ -321,7 +321,7 @@ Check `status()` to see current state.
 <details>
 <summary><b>Telegram messages have a backslash before numbers in digest</b></summary>
 
-This was Bug #4 (now fixed in v2.0). Pull the latest `InboxRadar.gs`.
+This was Bug #4 (now fixed in v2.0). Pull the latest `Code.gs`.
 </details>
 
 <details>
@@ -344,8 +344,8 @@ Run `status()` and verify `enabled: true` and `botConnected: true`.
 ## 📁 File Structure
 
 ```
-InboxRadar/
-├── InboxRadar.gs          ← The entire engine (single file, zero deps)
+INBOX-RADAR/
+├── Code.gs          ← The entire engine (single file, zero deps)
 └── README.md              ← This file
 ```
 
