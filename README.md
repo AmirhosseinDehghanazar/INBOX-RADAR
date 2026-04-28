@@ -1,11 +1,5 @@
 <div align="center">
 
-```
-
-          Gmail → Telegram  ·  Zero Infrastructure         
-               Google Apps Script  ·  v2.0               
-
-```
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=3B82F6&center=true&vCenter=true&width=600&lines=Inbox+Radar+v2.0;Gmail+%E2%86%92+Telegram+in+5+Minutes;Zero+Infra+%C2%B7+Zero+Dependencies;Rule-based+Intelligent+Filtering" alt="Typing SVG" />
 
